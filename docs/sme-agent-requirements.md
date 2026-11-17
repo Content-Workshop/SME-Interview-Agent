@@ -15,7 +15,7 @@ Running list. Add items as we learn them.
 | 9 | **Loadable brands.** Brands can be loaded into the agent, each with its own context: materials, audience, keywords, rules and flags. This includes Content Workshop (with AI Studio as part of it), Chatter as a fully separate brand, and eventually client brands. | Gap review, 2026-11-17 | Proposed |
 | 10 | **Reminders.** Send a reminder email if the SME hasn't started the interview, and another if they started but didn't finish. | Gap review, 2026-11-17 | Later version |
 | 11 | **Choose interview topics.** The person setting up the interview enters focus topics, and the interviewer leans its questions toward them. The generic template is the default; its questions are tailored to each SME. Later, topics could come from the content calendar. | Prototype build, 2026-11-17 | In prototype |
-| 12 | **Separate setup from the interview.** Setup creates a unique link for each interview. The SME opens the link and sees only the chat. Needs hosting, for example a password-protected test on Streamlit Community Cloud. | Prototype test, 2026-11-17 | Proposed |
+| 12 | **Separate setup from the interview.** Setup creates a unique link for each interview. The SME opens the link and sees only the chat. Needs hosting, for example a password-protected test on Streamlit Community Cloud. | Prototype test, 2026-11-17 | In prototype |
 | 13 | **No generic questions.** Every question points at something specific: a focus topic, the SME's role, a past answer or an existing post. | Prototype test, 2026-11-17 | In prototype |
 
 ## Notes

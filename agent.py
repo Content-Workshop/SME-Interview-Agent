@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import re
+import secrets
 from dataclasses import dataclass, field
 from datetime import date, datetime
 from pathlib import Path
@@ -374,6 +375,12 @@ class Session:
     status: str = "in progress"  # or "complete"
     id: str = ""
     model: str = DEFAULT_MODEL  # kept for the whole interview, including resume
+    token: str = ""  # secret part of the SME's link
+
+    @property
+    def started(self) -> bool:
+        """True once the interviewer has sent its opening message."""
+        return len(self.messages) > 1
 
     @property
     def folder(self) -> Path:
@@ -388,6 +395,7 @@ class Session:
             "messages": self.messages,
             "status": self.status,
             "model": self.model,
+            "token": self.token,
             "id": self.id,
             "updated": datetime.now().isoformat(timespec="seconds"),
         }
@@ -407,7 +415,12 @@ def _slug(text: str) -> str:
 def new_session(brand: str, template: str, setup: Setup, model: str = DEFAULT_MODEL) -> Session:
     stamp = datetime.now().strftime("%Y-%m-%d-%H%M")
     session = Session(
-        brand, template, setup, id=f"{stamp}-{_slug(setup.sme_name)}-{template}", model=model
+        brand,
+        template,
+        setup,
+        id=f"{stamp}-{_slug(setup.sme_name)}-{template}",
+        model=model,
+        token=secrets.token_urlsafe(16),
     )
     return session
 
@@ -421,6 +434,7 @@ def load_session(path: Path) -> Session:
         messages=data["messages"],
         status=data["status"],
         model=data.get("model", DEFAULT_MODEL),
+        token=data.get("token", ""),
         id=data["id"],
     )
 
@@ -430,3 +444,14 @@ def list_sessions(brand: str, status: str | None = None) -> list[Session]:
     if status:
         sessions = [s for s in sessions if s.status == status]
     return sorted(sessions, key=lambda s: s.id, reverse=True)
+
+
+def find_session(token: str) -> Session | None:
+    """Find the interview an SME link points to. Returns None if there's no match."""
+    if not token:
+        return None
+    for path in OUTPUT_DIR.glob("*/*/session.json"):
+        session = load_session(path)
+        if session.token and secrets.compare_digest(session.token, token):
+            return session
+    return None

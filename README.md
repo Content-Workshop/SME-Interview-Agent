@@ -34,13 +34,32 @@ On Windows, use `set ANTHROPIC_API_KEY=your-key-here` instead of `export`.
 streamlit run app.py
 ```
 
-Your browser opens the app. Fill in the setup form and click **Start interview**.
+Your browser opens the setup page. Fill in the form and click **Create interview link**, then send the link to the SME. They see only the chat. Finished interviews appear under **Interviews** on the setup page, with download and idea-bank buttons.
+
+To protect the setup page with a password, set `APP_PASSWORD` before starting the app. SME links work without it; each link has a long random code that can't be guessed.
 
 **To try it without an API key**, run demo mode. It uses canned questions:
 
 ```bash
 SME_AGENT_DEMO=1 streamlit run app.py
 ```
+
+## Putting it online (Streamlit Community Cloud)
+
+Links only work for other people once the app is online.
+
+1. Go to share.streamlit.io and sign in with GitHub.
+2. Click **Create app**, then choose repo `content-workshop/sme-interview-agent`, branch `staging`, main file `app.py`.
+3. Under **Advanced settings**, pick Python 3.12, and paste into **Secrets**:
+
+```toml
+ANTHROPIC_API_KEY = "your-key"
+APP_PASSWORD = "a-password-for-the-setup-page"
+```
+
+4. Click **Deploy**.
+
+**Limit:** Streamlit Community Cloud can wipe saved files when the app restarts or goes to sleep after a few days without use. Download each finished interview and idea bank right away.
 
 ## Answering by voice
 
@@ -51,7 +70,7 @@ Click the answer box, then use your computer's built-in dictation:
 ## Where things are saved
 
 Each interview gets a folder under `output/<brand>/`:
-- `session.json`: the conversation, saved after every message. Unfinished interviews appear under **Resume** in the sidebar.
+- `session.json`: the conversation, saved after every message. An SME can close the window and reopen their link to pick up where they left off.
 - `interview.md`: the completed interview file, with real client names marked `[ANON]`.
 - `idea-bank.md`: the idea bank. The sidebar toggle controls whether `[ANON]` names are removed.
 

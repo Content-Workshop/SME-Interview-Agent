@@ -146,6 +146,10 @@ class SessionTests(unittest.TestCase):
         session.status = "complete"
         session.save()
 
+        self.assertIs(agent.find_session("wrong-token"), None)
+        self.assertEqual(agent.find_session(session.token).id, session.id)
+        self.assertGreaterEqual(len(session.token), 16)
+
         loaded = agent.list_sessions("content-workshop")[0]
         self.assertEqual(loaded.model, agent.DEFAULT_MODEL)
         self.assertEqual(loaded.setup.sme_name, "Sam")
