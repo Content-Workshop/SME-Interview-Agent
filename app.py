@@ -113,8 +113,10 @@ if "session" not in st.session_state:
             "What they know best", placeholder="2 to 4 areas, separated by commas"
         )
         core_task = st.text_input(
-            "A core task others could learn from",
-            help="Used for the step-by-step process question.",
+            "A process they could walk someone through",
+            placeholder="e.g. turning an SME brain dump into a content brief",
+            help='Sets up the question "Walk me through how you do this, step by step." '
+            "Leave blank to ask about their core work in general.",
         )
         focus_topics = st.text_area(
             "Focus topics",
