@@ -1,0 +1,4 @@
+# Interview results can contain real client names. Keep them out of git.
+output/
+output-demo/
+__pycache__/
