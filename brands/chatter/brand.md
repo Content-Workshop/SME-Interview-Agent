@@ -17,6 +17,8 @@ Chatter is a fully separate brand from Content Workshop.
 ## Brand context
 
 - Built modules: Dash, Stories, Topics, Wizard. Roadmap examples (not live): full article draft generation, brand content library, Wizard V2 research-first mode, sales-specific outputs, user-selectable AI.
+- Flags: mark any Chatter capability that isn't one of the four built modules as `[ROADMAP]`. Default beta users to `[ANON]`.
+- Don't steer toward the product. Outside questions about building Chatter, never ask how Chatter solves the problem the SME describes. If they bring it up, record it and move on.
 - Approved framing: Chatter isn't in the business of writing your content for you; the human stays in the process.
 - Sourcing line: titles and summaries, never full article text, always a link to the original.
 - Voice rules: no "unlock," "seamless," "supercharge," "leverage," "game-changer," "enterprise-grade." Never use "sourced stories." Refer to third-party tools generically ("your AI tool").

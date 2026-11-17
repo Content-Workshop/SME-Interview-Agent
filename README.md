@@ -66,7 +66,6 @@ Create a folder under `brands/` with:
 | `brand.md` | Brand context. The `## Template fields` list fills the generic interview's placeholders. |
 | `keywords.md` | Target keywords. The idea bank uses only these. |
 | `posts.md` | Existing-post index. Build it with the command below. |
-| `interviews/*.md` | Optional brand-specific interview templates. |
 | `past-interviews/*.md` | Optional earlier interviews to use as context. |
 
 To build the post index from the brand's sitemap:
@@ -77,9 +76,9 @@ python build_post_index.py content-workshop https://contentworkshop.com/post-sit
 
 ## How it decides what to ask
 
-- **Generic interview** (default): `templates/generic.md`, filled in with the brand's fields and the setup form. The interviewer tailors each question to the SME and the focus topics.
-- **Brand interviews:** the fixed question sets in `brands/<brand>/interviews/`.
-- **Focus topics** on the setup form steer either one.
+Every interview starts from `templates/generic.md`. The app fills in the brand's fields and the setup form, and the interviewer tailors each question to the SME, the focus topics and the brand context. Brand-specific rules, such as Chatter's `[ROADMAP]` flag, live in each brand's `brand.md`.
+
+The original fixed interviews are kept for reference in `docs/original-interviews/`.
 
 ## Project docs
 

@@ -45,7 +45,6 @@ class Brand:
     keywords: str
     posts: str  # existing-post index, or "" if none
     past_interviews: list[tuple[str, str]]  # (filename, text)
-    templates: dict[str, str]  # slug -> template text (brand-specific)
 
 
 def list_brands() -> list[str]:
@@ -75,9 +74,6 @@ def load_brand(slug: str) -> Brand:
     # Interviews completed in this app count as past interviews too.
     for done in sorted((OUTPUT_DIR / slug).glob("*/interview.md")):
         past.append((f"{done.parent.name}.md", _read(done)))
-    templates = {
-        p.stem: _read(p) for p in sorted((folder / "interviews").glob("*.md"))
-    }
     return Brand(
         slug=slug,
         name=fields.get("BRAND_NAME", slug),
@@ -86,7 +82,6 @@ def load_brand(slug: str) -> Brand:
         keywords=_read(folder / "keywords.md"),
         posts=_read(folder / "posts.md"),
         past_interviews=past,
-        templates=templates,
     )
 
 
@@ -130,10 +125,9 @@ def prepare_generic(template: str, brand: Brand, setup: Setup) -> str:
     return text
 
 
-def template_for(brand: Brand, template_slug: str, setup: Setup) -> str:
-    if template_slug == GENERIC:
-        return prepare_generic(_read(TEMPLATES_DIR / "generic.md"), brand, setup)
-    return brand.templates[template_slug]
+def template_for(brand: Brand, setup: Setup) -> str:
+    """Every interview uses the generic template, tailored to the brand and SME."""
+    return prepare_generic(_read(TEMPLATES_DIR / "generic.md"), brand, setup)
 
 
 # --------------------------------------------------------------- prompts
@@ -160,10 +154,13 @@ Where an app rule conflicts with the file, the app rule wins.
    them: tailor question wording to them, and prefer questions where they fit.
    Don't force a topic into a question where it doesn't belong.
 
-5. Tailoring. If the file's questions are written generically, rewrite each
-   one in the SME's domain as you ask it, using their role, expertise and the
-   focus topics. Size the interview to the time target using the file's
-   sizing table when it has one.
+5. Tailoring. The file's questions are written generically. Rewrite each one
+   in the SME's domain as you ask it, using their role, expertise, the focus
+   topics and the brand context. Size the interview to the time target using
+   the file's sizing table. Add optional modules that fit the brand's content
+   goals. If the brand context defines extra flags (such as [ROADMAP] or
+   [TEST]), apply them the same way as [ANON] and [CHECK], and list them in
+   the wrap-up.
 
 6. Quick mode. If quick mode is on (from setup or the `quick mode` command),
    ask a follow-up ONLY when an answer is under one sentence, or when it

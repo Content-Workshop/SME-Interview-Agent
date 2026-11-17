@@ -27,7 +27,6 @@ class BrandTests(unittest.TestCase):
         cw = agent.load_brand("content-workshop")
         self.assertEqual(cw.name, "Content Workshop")
         self.assertEqual(cw.fields["CUSTOMERS"], "clients")
-        self.assertIn("ai-studio", cw.templates)
         self.assertTrue(cw.posts.startswith("# Existing Posts"))
         self.assertTrue(cw.past_interviews)
 
@@ -35,13 +34,13 @@ class BrandTests(unittest.TestCase):
         chatter = agent.load_brand("chatter")
         self.assertEqual(chatter.name, "Chatter")
         self.assertEqual(chatter.posts, "")
-        self.assertNotIn("content-workshop-blog", chatter.templates)
+        self.assertIn("[ROADMAP]", chatter.context)
 
 
 class TemplateTests(unittest.TestCase):
     def test_generic_template_is_filled_and_ready(self):
         brand = agent.load_brand("content-workshop")
-        text = agent.template_for(brand, GENERIC, SETUP)
+        text = agent.template_for(brand, SETUP)
         self.assertNotIn("{{", text)
         self.assertIn("**Template status:** READY", text)
         self.assertNotIn("PART 1: BUILD MODE", text)
@@ -50,10 +49,10 @@ class TemplateTests(unittest.TestCase):
         self.assertIn("Sam, Content Strategist", text)
         self.assertIn("**Priority topics:** AI search", text)
 
-    def test_brand_template_unchanged(self):
+    def test_brand_rules_reach_the_interview(self):
         brand = agent.load_brand("content-workshop")
-        text = agent.template_for(brand, "ai-studio", SETUP)
-        self.assertEqual(text, brand.templates["ai-studio"])
+        system = agent.interview_system(brand, agent.template_for(brand, SETUP))
+        self.assertTrue(any("[TEST]" in b["text"] for b in system))
 
 
 class PromptTests(unittest.TestCase):
@@ -129,7 +128,7 @@ class SessionTests(unittest.TestCase):
         brand = agent.load_brand("content-workshop")
         session = agent.new_session("content-workshop", GENERIC, SETUP)
         session.messages.append({"role": "user", "content": agent.kickoff_message(SETUP)})
-        system = agent.interview_system(brand, agent.template_for(brand, GENERIC, SETUP))
+        system = agent.interview_system(brand, agent.template_for(brand, SETUP))
         client = DemoClient()
 
         for answer in ["first answer", "second answer", None]:

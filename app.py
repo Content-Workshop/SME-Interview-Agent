@@ -36,12 +36,6 @@ def has_credentials() -> bool:
     return DEMO or bool(os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN"))
 
 
-def template_label(slug: str) -> str:
-    if slug == GENERIC:
-        return "Generic interview (tailored to the SME)"
-    return slug.replace("-", " ").title() + " interview"
-
-
 # ---------------------------------------------------------------- sidebar
 
 with st.sidebar:
@@ -112,9 +106,7 @@ client = get_client()
 
 if "session" not in st.session_state:
     st.write(f"Set up an interview for **{brand.name}**.")
-    template_options = [GENERIC] + list(brand.templates)
     with st.form("setup"):
-        template_slug = st.selectbox("Interview", template_options, format_func=template_label)
         sme_name = st.text_input("SME name *")
         sme_role = st.text_input("Role", placeholder="e.g. VP of Threat Intelligence")
         sme_expertise = st.text_input(
@@ -122,7 +114,7 @@ if "session" not in st.session_state:
         )
         core_task = st.text_input(
             "A core task others could learn from",
-            help="Used by the generic interview's step-by-step question.",
+            help="Used for the step-by-step process question.",
         )
         focus_topics = st.text_area(
             "Focus topics",
@@ -146,7 +138,7 @@ if "session" not in st.session_state:
             time_target=time_target,
             quick_mode=quick_mode,
         )
-        session = agent.new_session(brand_slug, template_slug, setup, model)
+        session = agent.new_session(brand_slug, GENERIC, setup, model)
         session.messages.append({"role": "user", "content": agent.kickoff_message(setup)})
         st.session_state.session = session
         st.rerun()
@@ -156,11 +148,11 @@ if "session" not in st.session_state:
 
 session: agent.Session = st.session_state.session
 brand = agent.load_brand(session.brand)
-template = agent.template_for(brand, session.template, session.setup)
+template = agent.template_for(brand, session.setup)
 system = agent.interview_system(brand, template)
 
 st.caption(
-    f"{brand.name} · {template_label(session.template)} · {session.setup.sme_name} · "
+    f"{brand.name} · {session.setup.sme_name} · "
     f"{agent.MODELS.get(session.model, session.model).split(' (')[0]}"
 )
 
