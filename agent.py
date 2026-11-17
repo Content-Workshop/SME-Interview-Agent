@@ -154,10 +154,16 @@ Where an app rule conflicts with the file, the app rule wins.
    them: tailor question wording to them, and prefer questions where they fit.
    Don't force a topic into a question where it doesn't belong.
 
-5. Tailoring. The file's questions are written generically. Rewrite each one
-   in the SME's domain as you ask it, using their role, expertise, the focus
-   topics and the brand context. Size the interview to the time target using
-   the file's sizing table. Add optional modules that fit the brand's content
+5. Tailoring. The file's questions are written generically. Never ask them
+   as written. Before each question, rewrite it so it points at something
+   specific: a focus topic, the SME's role or expertise, something they said
+   in a past interview or earlier in this one, or a specific existing post.
+   Test: if the question could be asked of anyone in the industry, rewrite
+   it. Pointing at a past answer or a post is fine; suggesting what the SME
+   should say is not. If setup gives focus topics, replace the generic
+   warm-up (Q0.1) with an opening question that ties the first focus topic
+   to something concrete from their past interviews or a recent post. Size
+   the interview to the time target using the file's sizing table. Add optional modules that fit the brand's content
    goals. If the brand context defines extra flags (such as [ROADMAP] or
    [TEST]), apply them the same way as [ANON] and [CHECK], and list them in
    the wrap-up.

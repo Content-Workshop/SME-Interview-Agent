@@ -60,6 +60,7 @@ class PromptTests(unittest.TestCase):
         brand = agent.load_brand("content-workshop")
         blocks = agent.interview_system(brand, "TEMPLATE")
         self.assertTrue(blocks[0]["text"].startswith("You are running an SME interview"))
+        self.assertIn("could be asked of anyone in the industry", blocks[0]["text"])
         self.assertIn("<existing_posts>", blocks[3]["text"])
         self.assertIn("TEMPLATE", blocks[-1]["text"])
         self.assertEqual(blocks[-1]["cache_control"], {"type": "ephemeral"})
