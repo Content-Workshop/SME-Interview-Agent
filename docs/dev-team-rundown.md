@@ -8,7 +8,7 @@
 
 ## The ask
 
-I'd like your direction on four things before going further:
+We're prototyping an AI interviewer that gets content ideas out of subject-matter experts without a live interview. A working version is built and tested on one machine, and before going further I'd like your direction on four things:
 
 1. **Hosting:** is Streamlit Community Cloud fine for a small test, or should this live somewhere we already run?
 2. **Storage:** where should interviews and results be saved so they don't get wiped?
