@@ -13,7 +13,7 @@ I'd like your direction on four things before going further:
 1. **Hosting:** is Streamlit Community Cloud fine for a small test, or should this live somewhere we already run?
 2. **Storage:** where should interviews and results be saved so they don't get wiped?
 3. **Security:** is the current access model (password for setup, secret link per SME) good enough for a test with real people?
-4. **Direction:** should this stay a standalone tool, or become part of Chatter?
+4. **Direction:** should this stay a standalone tool, or become part of Chatter? (See [Standalone vs Chatter](#standalone-vs-chatter).)
 
 A 30-minute review of the repo and this doc would be enough to start.
 
@@ -31,6 +31,27 @@ An AI interviewer that gets expert knowledge out of a subject-matter expert (SME
 **Why:** SMEs have the knowledge but no time for meetings. The longer-term idea is a tool clients could use, possibly inside Chatter.
 
 **Where it came from:** a Markdown interview template that you attach to any AI chat. That works, but it can't read brand context, check existing content, store results, or be sent to someone else. This prototype tests those missing pieces.
+
+---
+
+## Standalone vs Chatter
+
+The original goal says the tool "could eventually be used by clients or potentially become part of Chatter." That leaves two possible homes for it.
+
+| | Standalone tool | Module in Chatter |
+|---|---|---|
+| What it is | Its own app, with its own logins and storage | Sits alongside Dash, Stories, Topics and Wizard |
+| Who uses it | Content Workshop internally; could be offered to clients | Chatter users; Content Workshop would use it as a Chatter customer, since Chatter is a separate brand |
+| Reuse | Builds its own accounts, storage and brand data | Reuses Chatter's accounts, brand data and post tracking (covers requirements #1, #4 and #9) |
+| Fit | General-purpose SME interview tool | Fits Chatter's message that the human stays in the process: the SME supplies the ideas |
+| Speed | Quicker to build; doesn't depend on Chatter's roadmap | Tied to Chatter's tech and release schedule |
+| Cost | One more product to host, maintain and charge for | Shares Chatter's existing infrastructure |
+
+**Why it matters now:** the answer decides how the real version gets built. A Chatter module would likely be built in Chatter's stack, so this prototype's code would be a reference rather than the foundation.
+
+**Likely path:** keep it standalone for prototyping and testing either way. That lets us test interview quality with real SMEs quickly, without touching Chatter's code or roadmap. The Chatter decision can follow once testing shows whether the tool works.
+
+The final call is for leadership (with David), with input from the dev team.
 
 ---
 
@@ -110,7 +131,7 @@ An AI interviewer that gets expert knowledge out of a subject-matter expert (SME
 3. **API key.** It's an environment variable or Streamlit secret. Is there a company key or account we should use, and who owns billing?
 4. **Security and privacy.** Interviews can include client names and confidential details. What's the minimum bar for a test with external SMEs: authentication, data retention, access logs?
 5. **Stack.** Is Streamlit fine for a prototype, or should a real version be built in whatever Chatter uses?
-6. **Chatter fit.** If this becomes part of Chatter, what would need to change: auth, storage, brand data, post indexing?
+6. **Chatter fit.** If this becomes part of Chatter after testing, what would need to change: auth, storage, brand data, post indexing? Is the prototype worth building on, or only a reference?
 7. **Post index.** It's built from page HTML by a script and refreshed by hand. Should it run on a schedule, or come from an existing Chatter data source?
 
 ---
