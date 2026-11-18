@@ -51,7 +51,7 @@ The original goal says the tool "could eventually be used by clients or potentia
 
 **Likely path:** keep it standalone for prototyping and testing either way. That lets us test interview quality with real SMEs quickly, without touching Chatter's code or roadmap. The Chatter decision can follow once testing shows whether the tool works.
 
-The final call is for leadership (with David), with input from the dev team.
+The final call is ours to make with David, with input from the dev team.
 
 ---
 
